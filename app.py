@@ -5,7 +5,7 @@ import streamlit as st
 import cv2
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import load_model
+from tensorflow.python.keras.models import load_model
 import time
 import tempfile
 
@@ -52,7 +52,21 @@ def load_my_model():
         return None, None, str(e)
 
 model, label_map, load_error = load_my_model()
-urdu_labels = {'aaj': 'آج', 'shukriya': 'شکریہ'} # Baqi labels add kar len
+urdu_labels = {
+    'aaj': 'آج', 'aath': 'آٹھ', 'ahista': 'آہستہ', 'anywalakal': 'آنے والا کل',
+    'behtreen': 'بہترین', 'btana': 'بتانا', 'bukhar': 'بخار', 'bus': 'بس',
+    'car': 'کار', 'char': 'چار', 'chawal': 'چاول', 
+    'chay': 'چھ', 'chaye': 'چائے', 'chini': 'چینی', 'dard': 'درد', 'das': 'دس',
+    'dawai': 'دوائی', 'dekhna': 'دیکھنا', 'do': 'دو', 'dobara': 'دوبارہ',
+    'doctor': 'ڈاکٹر', 'doodh': 'دودھ', 'dost': 'دوست', 'ek': 'ایک',
+    'emergency': 'ایمرجنسی', 'ghalat': 'غلط', 'ghanta': 'گھنٹہ', 'gosht': 'گوشت',
+    'hafta': 'ہفتہ', 'intezar': 'انتظار', 'kal': 'کل', 'likhna': 'لکھنا',
+    'mahina': 'مہینہ', 'mask': 'ماسک', 'minute': 'منٹ', 'no': 'نہیں',
+    'paanch': 'پانچ', 'parhna': 'پڑھنا', 'raasta': 'راستہ', 'roti': 'روٹی',
+    'saat': 'سات', 'sabzi': 'سبزی', 'sahih': 'صحیح', 'samajhna': 'سمجھنا',
+    'stop': 'سٹاپ', 'sunna': 'سننا', 'tabdeel': 'تبدیل', 'teen': 'تین',
+    'tez': 'تیز', 'ticket': 'ٹکٹ', 'shukriya': 'شکریہ'
+} 
 
 # 4. Header
 st.markdown("<h1>SignSpeak</h1>", unsafe_allow_html=True)
