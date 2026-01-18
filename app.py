@@ -1,15 +1,12 @@
 import os
-# Keras version compatibility fix
-os.environ["TF_USE_LEGACY_KERAS"] = "1"
-
 import streamlit as st
 import cv2
 import numpy as np
-import tensorflow as tf
+import tensorflow as tf  # Sirf ye import kafi hai
 import time
 import tempfile
 
-# 1. Page Configuration
+# 1. Page Config
 st.set_page_config(page_title="Urdu SignSpeak", layout="wide")
 
 # 2. Custom CSS for exact UI match
@@ -66,7 +63,16 @@ urdu_labels = {
 @st.cache_resource
 def load_my_model():
     try:
-        model = tf.keras.models.load_model('SignSpeak_FYP1_v1.h5', compile=False, safe_mode=False)
+        # Naye Keras mein unsafe deserialization enable karna parta hai Lambda layers ke liye
+        if hasattr(tf.keras, "config"):
+            tf.keras.config.enable_unsafe_deserialization()
+            
+        # Model load karte waqt compile=False aur safe_mode=False lazmi hai
+        model = tf.keras.models.load_model(
+            'SignSpeak_FYP1_v1.h5', 
+            compile=False, 
+            safe_mode=False
+        )
         label_map = np.load('master_label_map.npy', allow_pickle=True).item()
         return model, label_map, None
     except Exception as e:
