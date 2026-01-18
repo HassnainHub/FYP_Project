@@ -63,16 +63,23 @@ urdu_labels = {
 @st.cache_resource
 def load_my_model():
     try:
-        # Naye Keras mein unsafe deserialization enable karna parta hai Lambda layers ke liye
+        # Keras 3 (TF 2.16+) mein Lambda layer ko handle karne ka tareeqa
         if hasattr(tf.keras, "config"):
             tf.keras.config.enable_unsafe_deserialization()
+
+        # Lambda layer ko as a custom object define karna
+        custom_objects = {
+            'Lambda': tf.keras.layers.Lambda
+        }
             
-        # Model load karte waqt compile=False aur safe_mode=False lazmi hai
+        # Model load karte waqt custom_objects pass karein
         model = tf.keras.models.load_model(
             'SignSpeak_FYP1_v1.h5', 
+            custom_objects=custom_objects,
             compile=False, 
             safe_mode=False
         )
+        
         label_map = np.load('master_label_map.npy', allow_pickle=True).item()
         return model, label_map, None
     except Exception as e:
